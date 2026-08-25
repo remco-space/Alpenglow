@@ -10,8 +10,8 @@ is either first-party (written for this project) or a symlink obtained at
 session start from wherever its author publishes it. Two provenance styles
 cover the obtained ones:
 
-- **Live symlink into a submodule** (`swift-ios-skills` and
-  `claude-code-apple-skills` rows below): the target lives in a
+- **Live symlink into a submodule** (`swift-ios-skills`,
+  `claude-code-apple-skills` and `mfm-skills` rows below): the target lives in a
   `.claude/skills-src/*` git submodule, which
   `.claude/hooks/skills-submodule-update.sh` advances to that submodule's
   latest **tagged release** (not the branch tip) on every `SessionStart`
@@ -48,12 +48,31 @@ cover the obtained ones:
 | `ios-localization` | dpearson2699/swift-ios-skills | see upstream repo | String Catalogs, pluralization, RTL. Auto-updates. |
 | `swift-concurrency` | dpearson2699/swift-ios-skills | see upstream repo | Sendable/actor isolation, Swift 6 strict concurrency. Auto-updates. |
 | `app-store-review` | dpearson2699/swift-ios-skills | see upstream repo | Submission readiness, privacy manifest — relevant once FR-10's manual release process gives way to distribution. Auto-updates. |
+| `mfm-spec-local` | [MadeForMachine/mfm-skills](https://github.com/MadeForMachine/mfm-skills), `skills/mfm-spec-local` | MIT | Interrogates software intent into a typed spec graph of components/features/criteria as local files. Submodule symlink, **pinned** — see below. |
 
 `ui-review-tahoe` and `liquid-glass` are pinned to `claude-code-apple-skills`'
 `pre-overhaul-2026-07` tag — its only other tag (`wwdc25-era-final`) predates
 it; there is no numbered-release scheme on that repo yet, so
 `skills-submodule-update.sh` ranks tags by creation date rather than parsing
 them as semver (unlike the `v*`-tagged `swift-ios-skills`).
+
+`mfm-spec-local` is the one skill here that does **not** auto-update, because
+`mfm-skills` publishes no git tags at all — it versions each skill in its
+SKILL.md frontmatter instead (`version: 0.8.2` at the pinned commit,
+`0360a1f`). The hook is wired for it regardless and no-ops on the missing tag,
+so it starts tracking releases by itself if upstream ever cuts one; until then
+the pin only moves when someone reads the diff and moves it. That is the strict
+end of this section's rule, not an exception to it.
+
+Its two siblings in that repo were deliberately left out. `mfm-spec` is the
+same skill backed by a hosted MCP connector at `mcp.mfm.dev` — it would need an
+account, OAuth and a live network for what `mfm-spec-local` does against local
+files. FR-1.5 governs photo content rather than design notes, so it does not
+forbid the hosted variant outright; it is the reason the local one is the
+obvious default in a project built so that work stays on the machine, and
+FR-9.3's works-with-no-network expectation is easier to keep with a skill that
+never needed one. `atlas` queries a product-discovery service Alpenglow has no
+use for. Don't add either speculatively.
 
 License notices this vendoring-free setup still owes their authors —
 `ui-review-tahoe` and `liquid-glass` are MIT, which requires the notice to

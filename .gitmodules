@@ -4,3 +4,6 @@
 [submodule ".claude/skills-src/claude-code-apple-skills"]
 	path = .claude/skills-src/claude-code-apple-skills
 	url = https://github.com/rshankras/claude-code-apple-skills.git
+[submodule ".claude/skills-src/mfm-skills"]
+	path = .claude/skills-src/mfm-skills
+	url = https://github.com/MadeForMachine/mfm-skills.git

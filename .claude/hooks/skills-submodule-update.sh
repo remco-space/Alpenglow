@@ -52,6 +52,20 @@ update_submodule() {  # $1 = path relative to repo root, $2 = human name for mes
 update_submodule ".claude/skills-src/swift-ios-skills" "swift-ios-skills"
 update_submodule ".claude/skills-src/claude-code-apple-skills" "claude-code-apple-skills"
 
+# mfm-skills publishes no git tags at all (checked at 0360a1f, Aug 2026): it
+# versions each skill in its SKILL.md frontmatter instead — mfm-spec-local
+# carries `version: 0.8.2`. The `[ -n "$latest_tag" ] || return 0` guard above
+# therefore makes this call a silent no-op, and the submodule simply stays on
+# the commit this repository pins. That is the correct outcome, not a gap to
+# work around: the rule this hook exists to enforce is that no unreviewed
+# third-party instruction text reaches context automatically, and "never moves"
+# satisfies it more strictly than "moves to tagged releases" does. Registering
+# it here anyway means the day upstream cuts its first release, this skill
+# starts tracking releases on its own with no edit here. Advancing the pin
+# before then is a deliberate act: bump it with `git -C
+# .claude/skills-src/mfm-skills checkout <commit>` after reading the diff.
+update_submodule ".claude/skills-src/mfm-skills" "mfm-skills"
+
 if [ "${#MESSAGES[@]}" -gt 0 ]; then
   printf '%s\n' "${MESSAGES[@]}" | python3 -c '
 import json, sys
